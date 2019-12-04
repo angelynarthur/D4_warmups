@@ -1,0 +1,36 @@
+Write a sql query to create a histogram of number of comments per user in the month of January 2019.
+
+
+SELECT user_comments.created_at, count(user_comments.created_at)
+FROM users INNER JOIN user_comments ON users.id = user_comments.user_id
+WHERE user_comments.created_at BETWEEN  ‘2019-01-01’ AND ‘2019-01-31’
+GROUP BY user_comments.created_at, user_comments.user_id;
+
+
+SELECT created_at, count(created_at)
+FROM user_comments
+WHERE user_comments.created_at BETWEEN  ‘2019-01-01’ AND ‘2019-01-31’
+GROUP BY created_at;
+
+—no comments query
+
+WITH zero_count AS (Select created_at, count(created_at) as total_count
+FROM user_comments
+WHERE user_comments.created_at BETWEEN  ‘2019-01-01’ AND ‘2019-01-31’ 
+GROUP BY created_at)
+
+SELECT * FROM zero_count HAVING total_count = 0;
+
+
+
+--Some code I used to test from the northwind db
+
+SELECT orders.order_date, count(orders.order_date)
+FROM orders 
+GROUP BY orders.order_date;
+
+SELECT orders.order_date, count(orders.order_date)
+FROM orders 
+WHERE order_date = '1996-09-09'
+GROUP BY orders.order_date;
+
